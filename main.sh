@@ -6,7 +6,6 @@ TMP_DIR="tmp.$$"
 
 cleanup() {
   rm -rf "$TMP_DIR"
-  exit 1
 }
 trap cleanup EXIT
 trap cleanup INT
