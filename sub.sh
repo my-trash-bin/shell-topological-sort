@@ -26,5 +26,5 @@ decode_octal() {
   < "$TMP_DIR/input/$1" grep -v '^$' | while IFS= read -r line; do
     sh "$0" "$(encode_octal "$line")"
   done
-  decode_octal "$1" >> "$TMP_DIR/out.txt"
+  decode_octal "$1"
 }

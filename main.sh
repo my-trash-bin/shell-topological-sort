@@ -32,5 +32,3 @@ mkdir -p "$TMP_DIR/process"
 (cd "$TMP_DIR/input" && echo * | xargs -n 1 echo | grep -v '^*$') | sort | while IFS= read -r line; do
   TMP_DIR="$TMP_DIR" sh "$(dirname "$0")/sub.sh" "$line"
 done
-
-[ ! -f "$TMP_DIR/out.txt" ] || cat "$TMP_DIR/out.txt"
