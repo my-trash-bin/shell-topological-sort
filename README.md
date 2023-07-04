@@ -39,4 +39,4 @@ minirt.exe
 ## Restrictions
 
 - No detection for dependency cycle.
-- Line break and equal sign is not supported due to file format.
+- Line break and equal sign and spaces are not supported due to file format.
