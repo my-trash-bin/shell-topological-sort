@@ -20,6 +20,29 @@ encode_octal() {
   echo "$RESULT"
 }
 
+decode_octal() {
+  STRING="$1"
+  RESULT=""
+  while [ -n "$STRING" ]; do
+    c=$(printf "%s\n" "$STRING" | cut -c 1-3)
+    # shellcheck disable=SC2059
+    RESULT="$RESULT$(printf "\\$c")"
+    STRING=$(printf "%s\n" "$STRING" | cut -c 4-)
+  done
+  echo "$RESULT"
+}
+
+add_node() {
+  ENCODED="$1"
+  [ -f "$TMP_DIR/process/$ENCODED" ] || {
+    touch "$TMP_DIR/process/$ENCODED"
+    < "$TMP_DIR/input/$ENCODED" grep -v '^$' | while IFS= read -r line; do
+      add_node "$(encode_octal "$line")"
+    done
+    decode_octal "$1"
+  }
+}
+
 mkdir -p "$TMP_DIR/input"
 while IFS="=" read -r dependent dependencies; do
   echo "$dependencies" | xargs -n 1 echo > "$TMP_DIR/input/$(encode_octal "$dependent")"
@@ -30,5 +53,5 @@ done
 
 mkdir -p "$TMP_DIR/process"
 (cd "$TMP_DIR/input" && echo * | xargs -n 1 echo | grep -v '^*$') | sort | while IFS= read -r line; do
-  TMP_DIR="$TMP_DIR" sh "$(dirname "$0")/sub.sh" "$line"
+  add_node "$line"
 done
