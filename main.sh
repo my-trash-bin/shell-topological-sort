@@ -39,7 +39,7 @@ add_node() {
     < "$TMP_DIR/input/$ENCODED" grep -v '^$' | while IFS= read -r line; do
       add_node "$(encode_octal "$line")"
     done
-    decode_octal "$1"
+    decode_octal "$ENCODED"
   }
 }
 
